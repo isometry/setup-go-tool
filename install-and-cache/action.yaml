@@ -1,0 +1,37 @@
+name: install-and-cache
+description: Build and cache a Go-based tool
+author: isometry
+inputs:
+  module:
+    description: Go module to install
+    required: true
+  name:
+    description: Override tool name, if it doesn't match the module name
+    required: false
+    default: ""
+  version:
+    description: Version of module to install
+    required: false
+    default: latest
+  cgo:
+    description: Enable CGO
+    required: false
+    default: "false"
+  flags:
+    description: Build flags to use
+    required: false
+    default: "-trimpath"
+  ldflags:
+    description: Build ldflags to use
+    required: false
+    default: "-s -w"
+  tags:
+    description: Build tags to use
+    required: false
+    default: ""
+outputs:
+  version:
+    description: Version of tool installed
+runs:
+  using: node20
+  main: dist/index.js

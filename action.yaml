@@ -1,0 +1,58 @@
+name: setup-go-tool
+description: Setup go-based tools by compilation or tool cache
+author: isometry
+inputs:
+  module:
+    description: Go module to install
+    required: true
+  name:
+    description: Override tool name, if it doesn't match the module name
+    required: false
+    default: ""
+  version:
+    description: Version of module to install
+    required: false
+    default: latest
+  go-version:
+    description: Version of Go to use
+    required: false
+    default: stable
+  cgo:
+    description: Enable CGO
+    required: false
+    default: "false"
+  flags:
+    description: Build flags to use
+    required: false
+    default: "-trimpath"
+  ldflags:
+    description: Build ldflags to use
+    required: false
+    default: "-s -w"
+  tags:
+    description: Build tags to use
+    required: false
+    default: ""
+outputs:
+  version:
+    description: Version of tool installed
+    value: ${{ steps.build.outputs.version }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: ${{ inputs.go-version }}
+    - name: Build and Cache tool
+      id: build
+      uses: isometry/setup-go-tool/install-and-cache@develop
+      with:
+        module: ${{ inputs.module }}
+        name: ${{ inputs.name }}
+        version: ${{ inputs.version }}
+        cgo: ${{ inputs.cgo }}
+        flags: ${{ inputs.flags }}
+        ldflags: ${{ inputs.ldflags }}
+        tags: ${{ inputs.tags }}
