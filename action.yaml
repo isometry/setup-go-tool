@@ -47,7 +47,7 @@ runs:
         go-version: ${{ inputs.go-version }}
     - name: Build and Cache tool
       id: build
-      uses: ./install-and-cache
+      uses: isometry/setup-go-tool/install-and-cache@develop
       with:
         module: ${{ inputs.module }}
         name: ${{ inputs.name }}
